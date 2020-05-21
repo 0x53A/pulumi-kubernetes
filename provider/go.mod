@@ -23,4 +23,9 @@ require (
 	sigs.k8s.io/yaml v1.2.0
 )
 
-replace github.com/Azure/go-autorest => github.com/Azure/go-autorest v13.3.1+incompatible
+replace (
+	github.com/Azure/go-autorest => github.com/Azure/go-autorest v13.3.1+incompatible
+	github.com/pulumi/pulumi/pkg/v2 => ../../pulumi/pkg
+	github.com/pulumi/pulumi/sdk/v2 => ../../pulumi/sdk
+
+)

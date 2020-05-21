@@ -42,7 +42,7 @@ build:: $(OPENAPI_FILE)
 	cd provider && $(GO) install $(VERSION_FLAGS) $(PROJECT)/provider/v2/cmd/$(CODEGEN)
 	# Delete only files and folders that are generated.
 	rm -r sdk/python/pulumi_kubernetes/*/ sdk/python/pulumi_kubernetes/__init__.py
-	for LANGUAGE in "dotnet" "go" "nodejs" "python"; do \
+	for LANGUAGE in "python"; do \
 		$(CODEGEN) $$LANGUAGE $(OPENAPI_FILE) $(CURDIR) || exit 3 ; \
 	done
 	cd ${PACKDIR}/nodejs/ && \
