@@ -147,13 +147,17 @@ func (o CertificateSigningRequestTypeArrayOutput) Index(i pulumi.IntInput) Certi
 }
 
 type CertificateSigningRequestCondition struct {
+	// lastTransitionTime is the time the condition last transitioned from one status to another. If unset, when a new condition type is added or an existing condition's status is changed, the server defaults this to the current time.
+	LastTransitionTime *string `pulumi:"lastTransitionTime"`
 	// timestamp for the last update to this condition
 	LastUpdateTime *string `pulumi:"lastUpdateTime"`
 	// human readable message with details about the request state
 	Message *string `pulumi:"message"`
 	// brief reason for the request state
 	Reason *string `pulumi:"reason"`
-	// request approval state, currently Approved or Denied.
+	// Status of the condition, one of True, False, Unknown. Approved, Denied, and Failed conditions may not be "False" or "Unknown". Defaults to "True". If unset, should be treated as "True".
+	Status *string `pulumi:"status"`
+	// type of the condition. Known conditions include "Approved", "Denied", and "Failed".
 	Type string `pulumi:"type"`
 }
 
@@ -170,13 +174,17 @@ type CertificateSigningRequestConditionInput interface {
 }
 
 type CertificateSigningRequestConditionArgs struct {
+	// lastTransitionTime is the time the condition last transitioned from one status to another. If unset, when a new condition type is added or an existing condition's status is changed, the server defaults this to the current time.
+	LastTransitionTime pulumi.StringPtrInput `pulumi:"lastTransitionTime"`
 	// timestamp for the last update to this condition
 	LastUpdateTime pulumi.StringPtrInput `pulumi:"lastUpdateTime"`
 	// human readable message with details about the request state
 	Message pulumi.StringPtrInput `pulumi:"message"`
 	// brief reason for the request state
 	Reason pulumi.StringPtrInput `pulumi:"reason"`
-	// request approval state, currently Approved or Denied.
+	// Status of the condition, one of True, False, Unknown. Approved, Denied, and Failed conditions may not be "False" or "Unknown". Defaults to "True". If unset, should be treated as "True".
+	Status pulumi.StringPtrInput `pulumi:"status"`
+	// type of the condition. Known conditions include "Approved", "Denied", and "Failed".
 	Type pulumi.StringInput `pulumi:"type"`
 }
 
@@ -232,6 +240,11 @@ func (o CertificateSigningRequestConditionOutput) ToCertificateSigningRequestCon
 	return o
 }
 
+// lastTransitionTime is the time the condition last transitioned from one status to another. If unset, when a new condition type is added or an existing condition's status is changed, the server defaults this to the current time.
+func (o CertificateSigningRequestConditionOutput) LastTransitionTime() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CertificateSigningRequestCondition) *string { return v.LastTransitionTime }).(pulumi.StringPtrOutput)
+}
+
 // timestamp for the last update to this condition
 func (o CertificateSigningRequestConditionOutput) LastUpdateTime() pulumi.StringPtrOutput {
 	return o.ApplyT(func(v CertificateSigningRequestCondition) *string { return v.LastUpdateTime }).(pulumi.StringPtrOutput)
@@ -247,7 +260,12 @@ func (o CertificateSigningRequestConditionOutput) Reason() pulumi.StringPtrOutpu
 	return o.ApplyT(func(v CertificateSigningRequestCondition) *string { return v.Reason }).(pulumi.StringPtrOutput)
 }
 
-// request approval state, currently Approved or Denied.
+// Status of the condition, one of True, False, Unknown. Approved, Denied, and Failed conditions may not be "False" or "Unknown". Defaults to "True". If unset, should be treated as "True".
+func (o CertificateSigningRequestConditionOutput) Status() pulumi.StringPtrOutput {
+	return o.ApplyT(func(v CertificateSigningRequestCondition) *string { return v.Status }).(pulumi.StringPtrOutput)
+}
+
+// type of the condition. Known conditions include "Approved", "Denied", and "Failed".
 func (o CertificateSigningRequestConditionOutput) Type() pulumi.StringOutput {
 	return o.ApplyT(func(v CertificateSigningRequestCondition) string { return v.Type }).(pulumi.StringOutput)
 }
