@@ -7,10 +7,16 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Kubernetes.Certificates.V1Beta1
+namespace Pulumi.Kubernetes.Certificates.V1
 {
     /// <summary>
-    /// Describes a certificate signing request
+    /// CertificateSigningRequest objects provide a mechanism to obtain x509 certificates by submitting a certificate signing request, and having it asynchronously approved and issued.
+    /// 
+    /// Kubelets use this API to obtain:
+    ///  1. client certificates to authenticate to kube-apiserver (with the "kubernetes.io/kube-apiserver-client-kubelet" signerName).
+    ///  2. serving certificates for TLS endpoints kube-apiserver can connect to securely (with the "kubernetes.io/kubelet-serving" signerName).
+    /// 
+    /// This API can be used to request client certificates to authenticate to kube-apiserver (with the "kubernetes.io/kube-apiserver-client" signerName), or to obtain certificates from custom non-Kubernetes signers.
     /// </summary>
     public partial class CertificateSigningRequest : KubernetesResource
     {
@@ -30,16 +36,16 @@ namespace Pulumi.Kubernetes.Certificates.V1Beta1
         public Output<Pulumi.Kubernetes.Types.Outputs.Meta.V1.ObjectMeta> Metadata { get; private set; } = null!;
 
         /// <summary>
-        /// The certificate request itself and any additional information.
+        /// spec contains the certificate request, and is immutable after creation. Only the request, signerName, and usages fields can be set on creation. Other fields are derived by Kubernetes and cannot be modified by users.
         /// </summary>
         [Output("spec")]
-        public Output<Pulumi.Kubernetes.Types.Outputs.Certificates.V1Beta1.CertificateSigningRequestSpec> Spec { get; private set; } = null!;
+        public Output<Pulumi.Kubernetes.Types.Outputs.Certificates.V1.CertificateSigningRequestSpec> Spec { get; private set; } = null!;
 
         /// <summary>
-        /// Derived information about the request.
+        /// status contains information about whether the request is approved or denied, and the certificate issued by the signer, or the failure condition indicating signer failure.
         /// </summary>
         [Output("status")]
-        public Output<Pulumi.Kubernetes.Types.Outputs.Certificates.V1Beta1.CertificateSigningRequestStatus> Status { get; private set; } = null!;
+        public Output<Pulumi.Kubernetes.Types.Outputs.Certificates.V1.CertificateSigningRequestStatus> Status { get; private set; } = null!;
 
 
         /// <summary>
@@ -49,24 +55,24 @@ namespace Pulumi.Kubernetes.Certificates.V1Beta1
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public CertificateSigningRequest(string name, Pulumi.Kubernetes.Types.Inputs.Certificates.V1Beta1.CertificateSigningRequestArgs? args = null, CustomResourceOptions? options = null)
-            : base("kubernetes:certificates.k8s.io/v1beta1:CertificateSigningRequest", name, MakeArgs(args), MakeResourceOptions(options, ""))
+        public CertificateSigningRequest(string name, Pulumi.Kubernetes.Types.Inputs.Certificates.V1.CertificateSigningRequestArgs? args = null, CustomResourceOptions? options = null)
+            : base("kubernetes:certificates.k8s.io/v1:CertificateSigningRequest", name, MakeArgs(args), MakeResourceOptions(options, ""))
         {
         }
         internal CertificateSigningRequest(string name, ImmutableDictionary<string, object?> dictionary, CustomResourceOptions? options = null)
-            : base("kubernetes:certificates.k8s.io/v1beta1:CertificateSigningRequest", name, new DictionaryResourceArgs(dictionary), MakeResourceOptions(options, ""))
+            : base("kubernetes:certificates.k8s.io/v1:CertificateSigningRequest", name, new DictionaryResourceArgs(dictionary), MakeResourceOptions(options, ""))
         {
         }
 
         private CertificateSigningRequest(string name, Input<string> id, CustomResourceOptions? options = null)
-            : base("kubernetes:certificates.k8s.io/v1beta1:CertificateSigningRequest", name, null, MakeResourceOptions(options, id))
+            : base("kubernetes:certificates.k8s.io/v1:CertificateSigningRequest", name, null, MakeResourceOptions(options, id))
         {
         }
 
-        private static Pulumi.Kubernetes.Types.Inputs.Certificates.V1Beta1.CertificateSigningRequestArgs? MakeArgs(Pulumi.Kubernetes.Types.Inputs.Certificates.V1Beta1.CertificateSigningRequestArgs? args)
+        private static Pulumi.Kubernetes.Types.Inputs.Certificates.V1.CertificateSigningRequestArgs? MakeArgs(Pulumi.Kubernetes.Types.Inputs.Certificates.V1.CertificateSigningRequestArgs? args)
         {
-            args ??= new Pulumi.Kubernetes.Types.Inputs.Certificates.V1Beta1.CertificateSigningRequestArgs();
-            args.ApiVersion = "certificates.k8s.io/v1beta1";
+            args ??= new Pulumi.Kubernetes.Types.Inputs.Certificates.V1.CertificateSigningRequestArgs();
+            args.ApiVersion = "certificates.k8s.io/v1";
             args.Kind = "CertificateSigningRequest";
             return args;
         }
@@ -78,7 +84,7 @@ namespace Pulumi.Kubernetes.Certificates.V1Beta1
                 Version = Utilities.Version,
                 Aliases =
                 {
-                    new Alias { Type = "kubernetes:certificates.k8s.io/v1:CertificateSigningRequest"},
+                    new Alias { Type = "kubernetes:certificates.k8s.io/v1beta1:CertificateSigningRequest"},
                 },
             };
             var merged = CustomResourceOptions.Merge(defaultOptions, options);
@@ -100,7 +106,7 @@ namespace Pulumi.Kubernetes.Certificates.V1Beta1
         }
     }
 }
-namespace Pulumi.Kubernetes.Types.Inputs.Certificates.V1Beta1
+namespace Pulumi.Kubernetes.Types.Inputs.Certificates.V1
 {
 
     public class CertificateSigningRequestArgs : Pulumi.ResourceArgs
@@ -121,10 +127,10 @@ namespace Pulumi.Kubernetes.Types.Inputs.Certificates.V1Beta1
         public Input<Pulumi.Kubernetes.Types.Inputs.Meta.V1.ObjectMetaArgs>? Metadata { get; set; }
 
         /// <summary>
-        /// The certificate request itself and any additional information.
+        /// spec contains the certificate request, and is immutable after creation. Only the request, signerName, and usages fields can be set on creation. Other fields are derived by Kubernetes and cannot be modified by users.
         /// </summary>
-        [Input("spec")]
-        public Input<Pulumi.Kubernetes.Types.Inputs.Certificates.V1Beta1.CertificateSigningRequestSpecArgs>? Spec { get; set; }
+        [Input("spec", required: true)]
+        public Input<Pulumi.Kubernetes.Types.Inputs.Certificates.V1.CertificateSigningRequestSpecArgs> Spec { get; set; } = null!;
 
         public CertificateSigningRequestArgs()
         {

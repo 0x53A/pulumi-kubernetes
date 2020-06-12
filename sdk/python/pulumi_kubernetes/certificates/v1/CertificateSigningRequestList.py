@@ -11,9 +11,9 @@ from pulumi import Input, ResourceOptions
 from ... import tables, version
 
 
-class CertificateSigningRequest(pulumi.CustomResource):
+class CertificateSigningRequestList(pulumi.CustomResource):
     """
-    Describes a certificate signing request
+    CertificateSigningRequestList is a collection of CertificateSigningRequest objects
     """
 
     apiVersion: pulumi.Output[str]
@@ -30,27 +30,22 @@ class CertificateSigningRequest(pulumi.CustomResource):
     info: https://git.k8s.io/community/contributors/devel/api-conventions.md#types-kinds
     """
 
+    items: pulumi.Output[list]
+    """
+    items is a collection of CertificateSigningRequest objects
+    """
+
     metadata: pulumi.Output[dict]
     
 
-    spec: pulumi.Output[dict]
-    """
-    The certificate request itself and any additional information.
-    """
-
-    status: pulumi.Output[dict]
-    """
-    Derived information about the request.
-    """
-
-    def __init__(self, resource_name, opts=None, metadata=None, spec=None, __name__=None, __opts__=None):
+    def __init__(self, resource_name, opts=None, items=None, metadata=None, __name__=None, __opts__=None):
         """
-        Create a CertificateSigningRequest resource with the given unique name, arguments, and options.
+        Create a CertificateSigningRequestList resource with the given unique name, arguments, and options.
 
         :param str resource_name: The _unique_ name of the resource.
         :param pulumi.ResourceOptions opts: A bag of options that control this resource's behavior.
+        :param pulumi.Input[list] items: items is a collection of CertificateSigningRequest objects
         :param pulumi.Input[dict] metadata: 
-        :param pulumi.Input[dict] spec: The certificate request itself and any additional information.
         """
         if __name__ is not None:
             warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
@@ -67,24 +62,21 @@ class CertificateSigningRequest(pulumi.CustomResource):
 
         __props__ = dict()
 
-        __props__['apiVersion'] = 'certificates.k8s.io/v1beta1'
-        __props__['kind'] = 'CertificateSigningRequest'
+        __props__['apiVersion'] = 'certificates.k8s.io/v1'
+        __props__['kind'] = 'CertificateSigningRequestList'
+        if items is None:
+            raise TypeError('Missing required property items')
+        __props__['items'] = items
         __props__['metadata'] = metadata
-        __props__['spec'] = spec
 
         __props__['status'] = None
 
-        parent = opts.parent if opts and opts.parent else None
-        aliases = [
-            pulumi.Alias(type_="kubernetes:certificates.k8s.io/v1:CertificateSigningRequest"),
-        ]
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(
             version=version.get_version(),
-            aliases=aliases,
         ))
 
-        super(CertificateSigningRequest, self).__init__(
-            "kubernetes:certificates.k8s.io/v1beta1:CertificateSigningRequest",
+        super(CertificateSigningRequestList, self).__init__(
+            "kubernetes:certificates.k8s.io/v1:CertificateSigningRequestList",
             resource_name,
             __props__,
             opts)
@@ -92,7 +84,7 @@ class CertificateSigningRequest(pulumi.CustomResource):
     @staticmethod
     def get(resource_name, id, opts=None):
         """
-        Get the state of an existing `CertificateSigningRequest` resource, as identified by `id`.
+        Get the state of an existing `CertificateSigningRequestList` resource, as identified by `id`.
         The ID is of the form `[namespace]/[name]`; if `[namespace]` is omitted,
         then (per Kubernetes convention) the ID becomes `default/[name]`.
 
@@ -105,7 +97,7 @@ class CertificateSigningRequest(pulumi.CustomResource):
                resource's behavior.
         """
         opts = ResourceOptions.merge(opts, pulumi.ResourceOptions(id=id))
-        return CertificateSigningRequest(resource_name, opts)
+        return CertificateSigningRequestList(resource_name, opts)
 
     def translate_output_property(self, prop: str) -> str:
         return tables._CASING_FORWARD_TABLE.get(prop) or prop

@@ -20449,7 +20449,7 @@ type PodSpec struct {
 	TerminationGracePeriodSeconds *int `pulumi:"terminationGracePeriodSeconds"`
 	// If specified, the pod's tolerations.
 	Tolerations []Toleration `pulumi:"tolerations"`
-	// TopologySpreadConstraints describes how a group of pods ought to spread across topology domains. Scheduler will schedule pods in a way which abides by the constraints. This field is only honored by clusters that enable the EvenPodsSpread feature. All topologySpreadConstraints are ANDed.
+	// TopologySpreadConstraints describes how a group of pods ought to spread across topology domains. Scheduler will schedule pods in a way which abides by the constraints. All topologySpreadConstraints are ANDed.
 	TopologySpreadConstraints []TopologySpreadConstraint `pulumi:"topologySpreadConstraints"`
 	// List of volumes that can be mounted by containers belonging to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes
 	Volumes []Volume `pulumi:"volumes"`
@@ -20533,7 +20533,7 @@ type PodSpecArgs struct {
 	TerminationGracePeriodSeconds pulumi.IntPtrInput `pulumi:"terminationGracePeriodSeconds"`
 	// If specified, the pod's tolerations.
 	Tolerations TolerationArrayInput `pulumi:"tolerations"`
-	// TopologySpreadConstraints describes how a group of pods ought to spread across topology domains. Scheduler will schedule pods in a way which abides by the constraints. This field is only honored by clusters that enable the EvenPodsSpread feature. All topologySpreadConstraints are ANDed.
+	// TopologySpreadConstraints describes how a group of pods ought to spread across topology domains. Scheduler will schedule pods in a way which abides by the constraints. All topologySpreadConstraints are ANDed.
 	TopologySpreadConstraints TopologySpreadConstraintArrayInput `pulumi:"topologySpreadConstraints"`
 	// List of volumes that can be mounted by containers belonging to the pod. More info: https://kubernetes.io/docs/concepts/storage/volumes
 	Volumes VolumeArrayInput `pulumi:"volumes"`
@@ -20778,7 +20778,7 @@ func (o PodSpecOutput) Tolerations() TolerationArrayOutput {
 	return o.ApplyT(func(v PodSpec) []Toleration { return v.Tolerations }).(TolerationArrayOutput)
 }
 
-// TopologySpreadConstraints describes how a group of pods ought to spread across topology domains. Scheduler will schedule pods in a way which abides by the constraints. This field is only honored by clusters that enable the EvenPodsSpread feature. All topologySpreadConstraints are ANDed.
+// TopologySpreadConstraints describes how a group of pods ought to spread across topology domains. Scheduler will schedule pods in a way which abides by the constraints. All topologySpreadConstraints are ANDed.
 func (o PodSpecOutput) TopologySpreadConstraints() TopologySpreadConstraintArrayOutput {
 	return o.ApplyT(func(v PodSpec) []TopologySpreadConstraint { return v.TopologySpreadConstraints }).(TopologySpreadConstraintArrayOutput)
 }
@@ -21126,7 +21126,7 @@ func (o PodSpecPtrOutput) Tolerations() TolerationArrayOutput {
 	}).(TolerationArrayOutput)
 }
 
-// TopologySpreadConstraints describes how a group of pods ought to spread across topology domains. Scheduler will schedule pods in a way which abides by the constraints. This field is only honored by clusters that enable the EvenPodsSpread feature. All topologySpreadConstraints are ANDed.
+// TopologySpreadConstraints describes how a group of pods ought to spread across topology domains. Scheduler will schedule pods in a way which abides by the constraints. All topologySpreadConstraints are ANDed.
 func (o PodSpecPtrOutput) TopologySpreadConstraints() TopologySpreadConstraintArrayOutput {
 	return o.ApplyT(func(v *PodSpec) []TopologySpreadConstraint {
 		if v == nil {

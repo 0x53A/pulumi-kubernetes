@@ -110,6 +110,8 @@ namespace Pulumi.Kubernetes.Yaml
                 type == typeof(Batch.V1Beta1.CronJobList) ? "batch/v1beta1/CronJobList" :
                 type == typeof(Batch.V2Alpha1.CronJob) ? "batch/v2alpha1/CronJob" :
                 type == typeof(Batch.V2Alpha1.CronJobList) ? "batch/v2alpha1/CronJobList" :
+                type == typeof(Certificates.V1.CertificateSigningRequest) ? "certificates.k8s.io/v1/CertificateSigningRequest" :
+                type == typeof(Certificates.V1.CertificateSigningRequestList) ? "certificates.k8s.io/v1/CertificateSigningRequestList" :
                 type == typeof(Certificates.V1Beta1.CertificateSigningRequest) ? "certificates.k8s.io/v1beta1/CertificateSigningRequest" :
                 type == typeof(Certificates.V1Beta1.CertificateSigningRequestList) ? "certificates.k8s.io/v1beta1/CertificateSigningRequestList" :
                 type == typeof(Coordination.V1.Lease) ? "coordination.k8s.io/v1/Lease" :
@@ -431,6 +433,7 @@ namespace Pulumi.Kubernetes.Yaml
                 || apiVersion == "batch/v1" && kind == "JobList"
                 || apiVersion == "batch/v1beta1" && kind == "CronJobList"
                 || apiVersion == "batch/v2alpha1" && kind == "CronJobList"
+                || apiVersion == "certificates.k8s.io/v1" && kind == "CertificateSigningRequestList"
                 || apiVersion == "certificates.k8s.io/v1beta1" && kind == "CertificateSigningRequestList"
                 || apiVersion == "coordination.k8s.io/v1" && kind == "LeaseList"
                 || apiVersion == "coordination.k8s.io/v1beta1" && kind == "LeaseList"
@@ -920,6 +923,18 @@ namespace Pulumi.Kubernetes.Yaml
                         {
                             id.Apply(id => ($"batch/v2alpha1/CronJobList::{id}",
                                 new Batch.V2Alpha1.CronJobList(id, obj!, opts) as KubernetesResource))
+                        };
+                    case "certificates.k8s.io/v1/CertificateSigningRequest":
+                        return new[]
+                        {
+                            id.Apply(id => ($"certificates.k8s.io/v1/CertificateSigningRequest::{id}",
+                                new Certificates.V1.CertificateSigningRequest(id, obj!, opts) as KubernetesResource))
+                        };
+                    case "certificates.k8s.io/v1/CertificateSigningRequestList":
+                        return new[]
+                        {
+                            id.Apply(id => ($"certificates.k8s.io/v1/CertificateSigningRequestList::{id}",
+                                new Certificates.V1.CertificateSigningRequestList(id, obj!, opts) as KubernetesResource))
                         };
                     case "certificates.k8s.io/v1beta1/CertificateSigningRequest":
                         return new[]

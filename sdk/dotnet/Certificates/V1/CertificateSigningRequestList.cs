@@ -7,12 +7,12 @@ using System.Collections.Immutable;
 using System.Threading.Tasks;
 using Pulumi.Serialization;
 
-namespace Pulumi.Kubernetes.Certificates.V1Beta1
+namespace Pulumi.Kubernetes.Certificates.V1
 {
     /// <summary>
-    /// Describes a certificate signing request
+    /// CertificateSigningRequestList is a collection of CertificateSigningRequest objects
     /// </summary>
-    public partial class CertificateSigningRequest : KubernetesResource
+    public partial class CertificateSigningRequestList : KubernetesResource
     {
         /// <summary>
         /// APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
@@ -21,53 +21,47 @@ namespace Pulumi.Kubernetes.Certificates.V1Beta1
         public Output<string> ApiVersion { get; private set; } = null!;
 
         /// <summary>
+        /// items is a collection of CertificateSigningRequest objects
+        /// </summary>
+        [Output("items")]
+        public Output<ImmutableArray<Pulumi.Kubernetes.Types.Outputs.Certificates.V1.CertificateSigningRequest>> Items { get; private set; } = null!;
+
+        /// <summary>
         /// Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
         /// </summary>
         [Output("kind")]
         public Output<string> Kind { get; private set; } = null!;
 
         [Output("metadata")]
-        public Output<Pulumi.Kubernetes.Types.Outputs.Meta.V1.ObjectMeta> Metadata { get; private set; } = null!;
-
-        /// <summary>
-        /// The certificate request itself and any additional information.
-        /// </summary>
-        [Output("spec")]
-        public Output<Pulumi.Kubernetes.Types.Outputs.Certificates.V1Beta1.CertificateSigningRequestSpec> Spec { get; private set; } = null!;
-
-        /// <summary>
-        /// Derived information about the request.
-        /// </summary>
-        [Output("status")]
-        public Output<Pulumi.Kubernetes.Types.Outputs.Certificates.V1Beta1.CertificateSigningRequestStatus> Status { get; private set; } = null!;
+        public Output<Pulumi.Kubernetes.Types.Outputs.Meta.V1.ListMeta> Metadata { get; private set; } = null!;
 
 
         /// <summary>
-        /// Create a CertificateSigningRequest resource with the given unique name, arguments, and options.
+        /// Create a CertificateSigningRequestList resource with the given unique name, arguments, and options.
         /// </summary>
         ///
         /// <param name="name">The unique name of the resource</param>
         /// <param name="args">The arguments used to populate this resource's properties</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public CertificateSigningRequest(string name, Pulumi.Kubernetes.Types.Inputs.Certificates.V1Beta1.CertificateSigningRequestArgs? args = null, CustomResourceOptions? options = null)
-            : base("kubernetes:certificates.k8s.io/v1beta1:CertificateSigningRequest", name, MakeArgs(args), MakeResourceOptions(options, ""))
+        public CertificateSigningRequestList(string name, Pulumi.Kubernetes.Types.Inputs.Certificates.V1.CertificateSigningRequestListArgs? args = null, CustomResourceOptions? options = null)
+            : base("kubernetes:certificates.k8s.io/v1:CertificateSigningRequestList", name, MakeArgs(args), MakeResourceOptions(options, ""))
         {
         }
-        internal CertificateSigningRequest(string name, ImmutableDictionary<string, object?> dictionary, CustomResourceOptions? options = null)
-            : base("kubernetes:certificates.k8s.io/v1beta1:CertificateSigningRequest", name, new DictionaryResourceArgs(dictionary), MakeResourceOptions(options, ""))
-        {
-        }
-
-        private CertificateSigningRequest(string name, Input<string> id, CustomResourceOptions? options = null)
-            : base("kubernetes:certificates.k8s.io/v1beta1:CertificateSigningRequest", name, null, MakeResourceOptions(options, id))
+        internal CertificateSigningRequestList(string name, ImmutableDictionary<string, object?> dictionary, CustomResourceOptions? options = null)
+            : base("kubernetes:certificates.k8s.io/v1:CertificateSigningRequestList", name, new DictionaryResourceArgs(dictionary), MakeResourceOptions(options, ""))
         {
         }
 
-        private static Pulumi.Kubernetes.Types.Inputs.Certificates.V1Beta1.CertificateSigningRequestArgs? MakeArgs(Pulumi.Kubernetes.Types.Inputs.Certificates.V1Beta1.CertificateSigningRequestArgs? args)
+        private CertificateSigningRequestList(string name, Input<string> id, CustomResourceOptions? options = null)
+            : base("kubernetes:certificates.k8s.io/v1:CertificateSigningRequestList", name, null, MakeResourceOptions(options, id))
         {
-            args ??= new Pulumi.Kubernetes.Types.Inputs.Certificates.V1Beta1.CertificateSigningRequestArgs();
-            args.ApiVersion = "certificates.k8s.io/v1beta1";
-            args.Kind = "CertificateSigningRequest";
+        }
+
+        private static Pulumi.Kubernetes.Types.Inputs.Certificates.V1.CertificateSigningRequestListArgs? MakeArgs(Pulumi.Kubernetes.Types.Inputs.Certificates.V1.CertificateSigningRequestListArgs? args)
+        {
+            args ??= new Pulumi.Kubernetes.Types.Inputs.Certificates.V1.CertificateSigningRequestListArgs();
+            args.ApiVersion = "certificates.k8s.io/v1";
+            args.Kind = "CertificateSigningRequestList";
             return args;
         }
 
@@ -76,10 +70,6 @@ namespace Pulumi.Kubernetes.Certificates.V1Beta1
             var defaultOptions = new CustomResourceOptions
             {
                 Version = Utilities.Version,
-                Aliases =
-                {
-                    new Alias { Type = "kubernetes:certificates.k8s.io/v1:CertificateSigningRequest"},
-                },
             };
             var merged = CustomResourceOptions.Merge(defaultOptions, options);
             // Override the ID if one was specified for consistency with other language SDKs.
@@ -87,29 +77,41 @@ namespace Pulumi.Kubernetes.Certificates.V1Beta1
             return merged;
         }
         /// <summary>
-        /// Get an existing CertificateSigningRequest resource's state with the given name, ID, and optional extra
+        /// Get an existing CertificateSigningRequestList resource's state with the given name, ID, and optional extra
         /// properties used to qualify the lookup.
         /// </summary>
         ///
         /// <param name="name">The unique name of the resulting resource.</param>
         /// <param name="id">The unique provider ID of the resource to lookup.</param>
         /// <param name="options">A bag of options that control this resource's behavior</param>
-        public static CertificateSigningRequest Get(string name, Input<string> id, CustomResourceOptions? options = null)
+        public static CertificateSigningRequestList Get(string name, Input<string> id, CustomResourceOptions? options = null)
         {
-            return new CertificateSigningRequest(name, id, options);
+            return new CertificateSigningRequestList(name, id, options);
         }
     }
 }
-namespace Pulumi.Kubernetes.Types.Inputs.Certificates.V1Beta1
+namespace Pulumi.Kubernetes.Types.Inputs.Certificates.V1
 {
 
-    public class CertificateSigningRequestArgs : Pulumi.ResourceArgs
+    public class CertificateSigningRequestListArgs : Pulumi.ResourceArgs
     {
         /// <summary>
         /// APIVersion defines the versioned schema of this representation of an object. Servers should convert recognized schemas to the latest internal value, and may reject unrecognized values. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#resources
         /// </summary>
         [Input("apiVersion")]
         public Input<string>? ApiVersion { get; set; }
+
+        [Input("items", required: true)]
+        private InputList<Pulumi.Kubernetes.Types.Inputs.Certificates.V1.CertificateSigningRequestArgs>? _items;
+
+        /// <summary>
+        /// items is a collection of CertificateSigningRequest objects
+        /// </summary>
+        public InputList<Pulumi.Kubernetes.Types.Inputs.Certificates.V1.CertificateSigningRequestArgs> Items
+        {
+            get => _items ?? (_items = new InputList<Pulumi.Kubernetes.Types.Inputs.Certificates.V1.CertificateSigningRequestArgs>());
+            set => _items = value;
+        }
 
         /// <summary>
         /// Kind is a string value representing the REST resource this object represents. Servers may infer this from the endpoint the client submits requests to. Cannot be updated. In CamelCase. More info: https://git.k8s.io/community/contributors/devel/sig-architecture/api-conventions.md#types-kinds
@@ -118,15 +120,9 @@ namespace Pulumi.Kubernetes.Types.Inputs.Certificates.V1Beta1
         public Input<string>? Kind { get; set; }
 
         [Input("metadata")]
-        public Input<Pulumi.Kubernetes.Types.Inputs.Meta.V1.ObjectMetaArgs>? Metadata { get; set; }
+        public Input<Pulumi.Kubernetes.Types.Inputs.Meta.V1.ListMetaArgs>? Metadata { get; set; }
 
-        /// <summary>
-        /// The certificate request itself and any additional information.
-        /// </summary>
-        [Input("spec")]
-        public Input<Pulumi.Kubernetes.Types.Inputs.Certificates.V1Beta1.CertificateSigningRequestSpecArgs>? Spec { get; set; }
-
-        public CertificateSigningRequestArgs()
+        public CertificateSigningRequestListArgs()
         {
         }
     }

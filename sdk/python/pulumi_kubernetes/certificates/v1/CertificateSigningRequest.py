@@ -13,7 +13,18 @@ from ... import tables, version
 
 class CertificateSigningRequest(pulumi.CustomResource):
     """
-    Describes a certificate signing request
+    CertificateSigningRequest objects provide a mechanism to obtain x509 certificates by submitting
+    a certificate signing request, and having it asynchronously approved and issued.
+    
+    Kubelets use this API to obtain:
+     1. client certificates to authenticate to kube-apiserver (with the
+    "kubernetes.io/kube-apiserver-client-kubelet" signerName).
+     2. serving certificates for TLS endpoints kube-apiserver can connect to securely (with the
+    "kubernetes.io/kubelet-serving" signerName).
+    
+    This API can be used to request client certificates to authenticate to kube-apiserver (with the
+    "kubernetes.io/kube-apiserver-client" signerName), or to obtain certificates from custom
+    non-Kubernetes signers.
     """
 
     apiVersion: pulumi.Output[str]
@@ -35,22 +46,27 @@ class CertificateSigningRequest(pulumi.CustomResource):
 
     spec: pulumi.Output[dict]
     """
-    The certificate request itself and any additional information.
+    spec contains the certificate request, and is immutable after creation. Only the request,
+    signerName, and usages fields can be set on creation. Other fields are derived by Kubernetes and
+    cannot be modified by users.
     """
 
     status: pulumi.Output[dict]
     """
-    Derived information about the request.
+    status contains information about whether the request is approved or denied, and the certificate
+    issued by the signer, or the failure condition indicating signer failure.
     """
 
-    def __init__(self, resource_name, opts=None, metadata=None, spec=None, __name__=None, __opts__=None):
+    def __init__(self, resource_name, opts=None, spec=None, metadata=None, __name__=None, __opts__=None):
         """
         Create a CertificateSigningRequest resource with the given unique name, arguments, and options.
 
         :param str resource_name: The _unique_ name of the resource.
         :param pulumi.ResourceOptions opts: A bag of options that control this resource's behavior.
+        :param pulumi.Input[dict] spec: spec contains the certificate request, and is immutable after creation. Only the
+               request, signerName, and usages fields can be set on creation. Other fields are
+               derived by Kubernetes and cannot be modified by users.
         :param pulumi.Input[dict] metadata: 
-        :param pulumi.Input[dict] spec: The certificate request itself and any additional information.
         """
         if __name__ is not None:
             warnings.warn("explicit use of __name__ is deprecated", DeprecationWarning)
@@ -67,16 +83,18 @@ class CertificateSigningRequest(pulumi.CustomResource):
 
         __props__ = dict()
 
-        __props__['apiVersion'] = 'certificates.k8s.io/v1beta1'
+        __props__['apiVersion'] = 'certificates.k8s.io/v1'
         __props__['kind'] = 'CertificateSigningRequest'
-        __props__['metadata'] = metadata
+        if spec is None:
+            raise TypeError('Missing required property spec')
         __props__['spec'] = spec
+        __props__['metadata'] = metadata
 
         __props__['status'] = None
 
         parent = opts.parent if opts and opts.parent else None
         aliases = [
-            pulumi.Alias(type_="kubernetes:certificates.k8s.io/v1:CertificateSigningRequest"),
+            pulumi.Alias(type_="kubernetes:certificates.k8s.io/v1beta1:CertificateSigningRequest"),
         ]
         opts = pulumi.ResourceOptions.merge(opts, pulumi.ResourceOptions(
             version=version.get_version(),
@@ -84,7 +102,7 @@ class CertificateSigningRequest(pulumi.CustomResource):
         ))
 
         super(CertificateSigningRequest, self).__init__(
-            "kubernetes:certificates.k8s.io/v1beta1:CertificateSigningRequest",
+            "kubernetes:certificates.k8s.io/v1:CertificateSigningRequest",
             resource_name,
             __props__,
             opts)
