@@ -2,7 +2,8 @@
 
 ### Improvements
 
-- Update resource deprecation/removal warnings. (https://github.com/pulumi/pulumi-kubernetes/pull/1162)
+-   Update resource deprecation/removal warnings. (https://github.com/pulumi/pulumi-kubernetes/pull/1162)
+-   Set supported environment variables in SDK Provider classes (https://github.com/pulumi/pulumi-kubernetes/pull/1166)
 
 ### Bug Fixes
 
